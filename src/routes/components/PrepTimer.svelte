@@ -1,6 +1,6 @@
 <script>
   import { onInterval } from '$lib/utils.js';
-  import { prepTime } from '$lib/stores.js';
+  import { inactiveSeconds } from '$lib/stores.js';
   import PrepIncrementer from './PrepIncrementer.svelte';
   import PrepDecrementer from './PrepDecrementer.svelte';
 
@@ -8,7 +8,7 @@
   export let clock;
   export let callback;
 
-  let seconds = prepTime;
+  let seconds = $inactiveSeconds;
   onInterval(() => (seconds += 1), 1000);
 </script>
 
@@ -16,10 +16,10 @@
   id="timer-display"
   class="timer-display"
 >
-  <h1>Prep</h1>
+  <h1>Inactive</h1>
   <div class="container">
     <h1>
-      {$prepTime}
+      {$inactiveSeconds}
     </h1>
     <PrepDecrementer />
     <PrepIncrementer />
