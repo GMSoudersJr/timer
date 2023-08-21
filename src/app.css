@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 body {
   background: #F1F1F1;
@@ -8,4 +9,26 @@ body {
 }
 h1 {
   color: #000000;
+}
+.app-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4em;
+}
+.set-timer-display,
+.set-minutes-container,
+.set-seconds-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.set-minutes-and-seconds-container {
+  display: flex;
+}
+
+.button-incrementer,
+.button-decrementer {
+  height: 30px;
+  width: 30px;
 }

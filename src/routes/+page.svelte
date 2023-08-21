@@ -1,8 +1,10 @@
 <script>
   import '../app.css';
-  import PrepTimer from './components/PrepTimer.svelte';
-  import ActivityTimer from './components/ActivityTimer.svelte';
+  import ActivityTimer from './components/activeTimer/SetTimer.svelte';
+  import RecoveryTimer from './components/inactiveTimer/SetTimer.svelte';
 </script>
 
-<PrepTimer />
-<ActivityTimer />
+<div class="app-container">
+  <RecoveryTimer />
+  <ActivityTimer />
+</div>
