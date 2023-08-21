@@ -2,7 +2,11 @@
   import { activityTime } from '$lib/stores.js';
 
   function decrement() {
-    activityTime.update((seconds) => seconds - 1);
+    if ( $activityTime > 0 ) {
+      activityTime.update((seconds) => seconds - 1);
+    } else {
+      activityTime.update((seconds) => seconds = 59);
+    }
   }
 </script>
 
