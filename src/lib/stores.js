@@ -23,6 +23,22 @@ function createMinuteOrSecondObject() {
 	};
 }
 
+function countdownSeconds() {
+	const { subscribe, set, update } = writable(0);
+
+	return {
+		subscribe,
+		decrement: () => update((seconds) => {
+				return seconds - 1
+		}),
+		reset: () => set(0),
+		create: () => update((seconds) => {
+			return (($activeMinutes * 60) + $activeSeconds)
+		}),
+		
+	};
+}
+
 export const activeSeconds = createMinuteOrSecondObject();
 export const activeMinutes = createMinuteOrSecondObject();
 export const activeTimeInSeconds = writable(0);
@@ -30,3 +46,5 @@ export const activeTimeInSeconds = writable(0);
 export const inactiveSeconds = createMinuteOrSecondObject();
 export const inactiveMinutes= createMinuteOrSecondObject();
 export const inactiveTimeInSeconds = writable(0);
+
+export const runningTimer = writable(false);

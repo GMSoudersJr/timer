@@ -5,24 +5,47 @@
       activeTimeInSeconds,
       inactiveSeconds,
       inactiveMinutes,
-      inactiveTimeInSeconds
+      inactiveTimeInSeconds,
+      runningTimer
    } from '$lib/stores.js';
+   import { minutesAndSecondsString } from '$lib/utils.js';
+   import StartStop from './StartStop.svelte';
+   import Timer from './Timer.svelte';
 
-   activeTimeInSeconds.set($activeSeconds + ($activeMinutes * 60));
+   $: whichTimer = "Activity";
 
-   function createMinuteAndSecondDisplay(timeInSeconds) {
-      let timerMinutes = Math.floor(timeInSeconds / 60); 
-      let timerSeconds = Math.floor(timeInSeconds % 60);
-      if ( timerMinutes < 10 ) timerMinutes = `0${timerMinutes}`;
-      if ( timerSeconds < 10 ) timerSeconds = `0${timerSeconds}`;
+   $: activityCountdownSeconds = Number.parseInt($activeSeconds + ($activeMinutes * 60));
+   $: recoveryCountdownSeconds = Number.parseInt($inactiveSeconds + ($inactiveMinutes * 60));
 
-      return `${timerMinutes}:${timerSeconds}`;
-   }
-   let seconds = inactiveTimeInSeconds.set($inactiveSeconds + ($inactiveMinutes * 60));
-   console.log(seconds);
+   activeTimeInSeconds.update(seconds => {
+      seconds = Number.parseInt($activeSeconds) + (Number.parseInt($activeMinutes) * 60);
+      return seconds
+   });
+
+   inactiveTimeInSeconds.set($inactiveSeconds + ($inactiveMinutes * 60));
+
+   $: timerDisplay = minutesAndSecondsString(activityCountdownSeconds);
+
    const handleTick = () => {
-      seconds -= 1;
+      if ($runningTimer && activityCountdownSeconds == 0 &&
+         recoveryCountdownSeconds >= 0) {
+         timerDisplay = minutesAndSecondsString(recoveryCountdownSeconds);
+         whichTimer = "Recovery";
+         console.log("Recovery TOCK! TOCK!");
+         recoveryCountdownSeconds--
+      }
+      if ( $runningTimer && activityCountdownSeconds > 0 )  {
+         activityCountdownSeconds--
+         console.log("Activity TICK! TICK!");
+      }
    }
+
 </script>
 
-<h1>{ createMinuteAndSecondDisplay(seconds) }</h1>
+<StartStop callback={handleTick}/>
+<Timer
+   clock={timerDisplay}
+   {whichTimer}
+/>
+<h1>Active { minutesAndSecondsString($activeSeconds + ($activeMinutes * 60)) }</h1>
+<h1>Inactive { minutesAndSecondsString($inactiveSeconds + ($inactiveMinutes * 60)) }</h1>
