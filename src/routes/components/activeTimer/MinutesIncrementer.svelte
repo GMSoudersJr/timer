@@ -9,6 +9,6 @@
   class="button-incrementer"
   on:click={ activeMinutes.increment }
 >
-  +
+  ➕
 </button>
 

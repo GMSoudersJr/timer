@@ -9,5 +9,5 @@
   class="button-decrementer"
   on:click={ activeMinutes.decrement }
 >
-  -
+  ➖
 </button>

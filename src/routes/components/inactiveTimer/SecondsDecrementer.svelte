@@ -9,6 +9,6 @@
   class="button-decrementer"
   on:click={ inactiveSeconds.decrement }
 >
-  -
+  ➖
 </button>
 

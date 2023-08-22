@@ -9,7 +9,7 @@
   class="button-decrementer"
   on:click={ activeSeconds.decrement }
 >
-  -
+  ➖
 </button>
 
 
