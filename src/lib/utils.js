@@ -1,4 +1,5 @@
 import { onDestroy } from 'svelte';
+import { currentIntervalId } from '$lib/stores.js';
 
 export function onInterval(callback, milliseconds) {
 	const interval = setInterval(callback, milliseconds);

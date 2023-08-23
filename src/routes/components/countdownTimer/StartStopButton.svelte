@@ -1,9 +1,11 @@
 <script>
-  import { runningTimer, currentIntervalId } from '$lib/stores.js';
-  import { onInterval } from '$lib/utils.js';
+  import {
+    runningTimer,
+    currentIntervalId,
+    timerToDisplay
+  } from '$lib/stores.js';
 
   export let callback;
-
 
   const startInterval = () => {
     currentIntervalId.update(interval => interval = setInterval(callback, 1000)) ;
@@ -12,6 +14,9 @@
 
   function handleClick() {
     runningTimer.update(status => status = !status);
+    if ( !$timerToDisplay ) {
+      timerToDisplay.update(timer => timer = "activity");
+    }
     console.log("runningTimer", $runningTimer);
     if ( $runningTimer) {
       startInterval();
