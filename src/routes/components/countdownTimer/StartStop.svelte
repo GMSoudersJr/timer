@@ -1,14 +1,13 @@
 <script>
-  import { runningTimer } from '$lib/stores.js';
+  import { runningTimer, currentIntervalId } from '$lib/stores.js';
   import { onInterval } from '$lib/utils.js';
 
   export let callback;
 
-  let nIntervalId;
 
   const startInterval = () => {
-    nIntervalId = setInterval(callback, 1000);
-    console.log("set interval", nIntervalId);
+    currentIntervalId.update(interval => interval = setInterval(callback, 1000)) ;
+    console.log("set interval", $currentIntervalId);
   };
 
   function handleClick() {
@@ -16,9 +15,9 @@
     console.log("runningTimer", $runningTimer);
     if ( $runningTimer) {
       startInterval();
-    } else if (nIntervalId && !$runningTimer) {
-      clearInterval(nIntervalId);
-      console.log("cleared interval", nIntervalId);
+    } else if (currentIntervalId && !$runningTimer) {
+      clearInterval($currentIntervalId);
+      console.log("cleared interval", $currentIntervalId);
     }
   }
 

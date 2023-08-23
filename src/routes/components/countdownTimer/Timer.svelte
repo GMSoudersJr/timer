@@ -1,17 +1,17 @@
 <script>
   export let clock;
-  export let whichTimer;
+  export let timerName;
 </script>
 
 <div class="container">
-  <h2>{whichTimer}</h2>
-  <div class="timer">
+  <h2>{timerName}</h2>
+  <h1 class="timer">
     {clock}
-  </div>
+  </h1>
 </div>
 
 <style>
-  .timer {
-    font-size: 2.5em;
+  .container {
+    align-self: center;
   }
 </style>
