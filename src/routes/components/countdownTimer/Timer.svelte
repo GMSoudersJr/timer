@@ -1,6 +1,6 @@
 <script>
-  export let clock;
   export let timerName;
+  export let clock;
 </script>
 
 <div class="container">

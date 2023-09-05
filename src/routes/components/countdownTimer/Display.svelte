@@ -26,12 +26,13 @@
    = minutesAndSecondsString(activityCountdownSeconds);
 
    const handleTick = () => {
-      if (activityCountdownSeconds > 0)  {
+      if (activityCountdownSeconds > 0 && $runningTimer)  {
          activityCountdownSeconds--
          console.log("Activity TICK! TICK!");
       }
       if ( activityCountdownSeconds == 0 && timerToDisplay === 'activity' ) {
          clearInterval($currentIntervalId);
+         //TODO BEEP!
          console.log("Activity Timer finished. Cleared Interval", $currentIntervalId);
          timerToDisplay.update(value => value = "recovery");
       }
@@ -44,6 +45,9 @@
          console.log("Recovery TOCK! TOCK!");
       }
    }
+   /*
+   <ActivityTimer callback={handleTick} clock={activityMinutesAndSecondsString} />
+    */
 </script>
 
 <StartStopButton callback={handleTick}/>
@@ -52,5 +56,5 @@
 {:else if $timerToDisplay == "recovery"}
    <RecoveryTimer clock={recoveryMinutesAndSecondsString} />
 {:else}
-   <Timer timerName="HaHa"clock="80:08"/>
+   <Timer timerName="HaHa" clock="80:08" />
 {/if}
