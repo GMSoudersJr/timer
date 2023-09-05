@@ -8,7 +8,7 @@
       currentIntervalId,
       timerToDisplay,
    } from '$lib/stores.js';
-   import { minutesAndSecondsString } from '$lib/utils.js';
+   import { minutesAndSecondsString, startAnInterval } from '$lib/utils.js';
    import StartStopButton from './StartStopButton.svelte';
    import Timer from './Timer.svelte';
    import ActivityTimer from './ActivityTimer.svelte';
@@ -23,26 +23,33 @@
    = minutesAndSecondsString(activityCountdownSeconds);
 
    $: recoveryMinutesAndSecondsString
-   = minutesAndSecondsString(activityCountdownSeconds);
+   = minutesAndSecondsString(recoveryCountdownSeconds);
 
    const handleTick = () => {
+      console.log("$currentIntervalId", $currentIntervalId);
       if (activityCountdownSeconds > 0 && $runningTimer)  {
-         activityCountdownSeconds--
+         activityCountdownSeconds--;
          console.log("Activity TICK! TICK!");
       }
-      if ( activityCountdownSeconds == 0 && timerToDisplay === 'activity' ) {
+      if ( activityCountdownSeconds == 0 && $timerToDisplay === 'activity' ) {
          clearInterval($currentIntervalId);
-         //TODO BEEP!
          console.log("Activity Timer finished. Cleared Interval", $currentIntervalId);
-         timerToDisplay.update(value => value = "recovery");
+         currentIntervalId.update(id => id = 0);
+
+         //TODO BEEP!
       }
-      //TODO clear the interval after time finishes or use separate timers.
-      // Try putting startInterval in utils.js instead of using typing it
-      // again.
       if (activityCountdownSeconds == 0 && recoveryCountdownSeconds > 0) {
-         clearInterval(currentIntervalId)
-         recoveryCountdownSeconds--
+         timerToDisplay.update(value => value = "recovery");
+         recoveryCountdownSeconds--;
          console.log("Recovery TOCK! TOCK!");
+      }
+      if ( activityCountdownSeconds == 0 && recoveryCountdownSeconds == 0 &&
+         $runningTimer ) {
+         console.log("Recovery finished");
+         clearInterval($currentIntervalId);
+         runningTimer.update(status => status = !status);
+         timerToDisplay.update(display => display = "DONE");
+
       }
    }
    /*
@@ -52,9 +59,9 @@
 
 <StartStopButton callback={handleTick}/>
 {#if $timerToDisplay == "activity"}
-   <ActivityTimer clock={activityMinutesAndSecondsString} />
+   <ActivityTimer callback={handleTick} clock={activityMinutesAndSecondsString} />
 {:else if $timerToDisplay == "recovery"}
-   <RecoveryTimer clock={recoveryMinutesAndSecondsString} />
+   <RecoveryTimer callback={handleTick} clock={recoveryMinutesAndSecondsString} />
 {:else}
    <Timer timerName="HaHa" clock="80:08" />
 {/if}

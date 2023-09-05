@@ -1,14 +1,12 @@
 <script>
-  // import { onInterval } from '$lib/utils.js';
-  //import { currentIntervalId } from '$lib/stores.js';
+  import { onInterval } from '$lib/utils.js';
+  import { currentIntervalId } from '$lib/stores.js';
   export let clock;
-  //export let callback;
+  export let callback;
 
-  /*
   if ( !$currentIntervalId ) {
     onInterval(callback, 1000);
   }
-   */
 </script>
 
 <div class="container">

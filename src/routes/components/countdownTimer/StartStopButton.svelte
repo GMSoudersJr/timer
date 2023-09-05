@@ -22,9 +22,8 @@
 
     if ( $runningTimer && !$timerToDisplay ) {
       timerToDisplay.update(timer => timer = "activity");
-      startInterval();
     } else if ( $runningTimer && $timerToDisplay ) {
-      console.log("what's going on?")
+      console.log("Continuing the countdown")
       startInterval();
     } else if ( !$runningTimer && $timerToDisplay ) {
       clearInterval($currentIntervalId);

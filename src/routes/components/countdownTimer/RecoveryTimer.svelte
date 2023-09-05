@@ -1,5 +1,12 @@
 <script>
+  import { onInterval } from '$lib/utils.js';
+  import { currentIntervalId } from '$lib/stores.js';
   export let clock;
+  export let callback;
+
+  if ( !$currentIntervalId ) {
+    onInterval(callback, 1000);
+  }
 </script>
 
 <div class="container">
@@ -11,6 +18,10 @@
 
 <style>
   .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     align-self: center;
   }
 </style>
