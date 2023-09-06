@@ -6,12 +6,21 @@
     timerToDisplay
   } from '$lib/stores.js';
 
-  export let callback;
+  export let activityCallback;
+  export let recoveryCallback
 
   const startInterval = () => {
-    let intervalId = setInterval(callback, 1000);
+    let intervalId;
+    if ( $timerToDisplay === "activity" ) {
+      intervalId = setInterval(activityCallback, 1000);
+    } else if ( $timerToDisplay === "recovery" ) {
+      intervalId = setInterval(recoveryCallback, 1000);
+    } else {
+      intervalId = 0;
+    }
     currentIntervalId.update(id => id = intervalId);
-    console.log("set interval", $currentIntervalId);
+    console.log("Continuing the countdown")
+    console.log("Starting new interval:", $currentIntervalId);
   };
 
   onDestroy(() => {
@@ -28,7 +37,6 @@
     if ( $runningTimer && !$timerToDisplay ) {
       timerToDisplay.update(name => name = "activity");
     } else if ( $runningTimer && $timerToDisplay ) {
-      console.log("Continuing the countdown")
       startInterval();
     } else if ( !$runningTimer && $timerToDisplay ) {
       clearInterval($currentIntervalId);

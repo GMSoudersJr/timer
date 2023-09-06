@@ -28,6 +28,8 @@
    $: recoveryMinutesAndSecondsString
    = minutesAndSecondsString(recoveryCountdownSeconds);
 
+   let timeoutId;
+
    const handleTick = () => {
       if (activityCountdownSeconds > 0 && $runningTimer)  {
          activityCountdownSeconds--;
@@ -38,31 +40,59 @@
          console.log("Activity Timer finished. Cleared Interval", $currentIntervalId);
          currentIntervalId.update(id => id = 0);
          //TODO BEEP!
+         timeoutId = setTimeout(() => {
+            timerToDisplay.update(name => name = "recovery");
+         }, 1000);
+         console.log("timeoutId:", timeoutId);
       }
-      if (activityCountdownSeconds == 0 && recoveryCountdownSeconds > 0) {
-         timerToDisplay.update(name => name = "recovery");
+   }
+
+   const recoveryTick = () => {
+      if (recoveryCountdownSeconds > 0 && $runningTimer)  {
          recoveryCountdownSeconds--;
          console.log("Recovery TOCK! TOCK!");
-      }
-      if ( activityCountdownSeconds == 0 && recoveryCountdownSeconds == 0 &&
-         $runningTimer ) {
-         console.log("Recovery finished");
+      } else if ( recoveryCountdownSeconds == 0 && $timerToDisplay === 'recovery' ) {
          clearInterval($currentIntervalId);
+         console.log("Recovery Timer finished. Cleared Interval", $currentIntervalId);
          currentIntervalId.update(id => id = 0);
-         runningTimer.update(status => status = !status);
-         timerToDisplay.update(display => display = null);
-         activityCountdownSeconds = Number.parseInt($activeSeconds + ($activeMinutes * 60));
-         recoveryCountdownSeconds = Number.parseInt($inactiveSeconds + ($inactiveMinutes * 60));
+         clearTimeout(timeoutId);
+         timeoutId = setTimeout(() => {
+            console.log("RESET IT ALL")
+            resetTheDisplay();
+            resetTheTimers();
+            resetTheButton();
+         }, 1000);
+         console.log("timeoutId:", timeoutId);
          //TODO BEEP!
       }
    }
+
+   const resetTheButton = () => {
+      runningTimer.update(status => status = !status);
+   }
+   const resetTheDisplay = () => {
+      timerToDisplay.update(display => display = null);
+   }
+   const resetTheTimers = () => {
+      activityCountdownSeconds = calculateSeconds($activeMinutes, $activeSeconds);
+      recoveryCountdownSeconds = calculateSeconds($inactiveMinutes, $inactiveSeconds);
+   }
 </script>
 
-<StartStopButton callback={handleTick}/>
+<StartStopButton
+   activityCallback={handleTick}
+   recoveryCallback={recoveryTick}
+/>
 {#if $timerToDisplay == "activity"}
-   <ActivityTimer callback={handleTick} clock={activityMinutesAndSecondsString} />
+   <ActivityTimer
+      callback={handleTick}
+      clock={activityMinutesAndSecondsString}
+   />
 {:else if $timerToDisplay == "recovery"}
-   <RecoveryTimer callback={handleTick} clock={recoveryMinutesAndSecondsString} />
+   <RecoveryTimer
+      callback={recoveryTick}
+      clock={recoveryMinutesAndSecondsString}
+   />
 {:else}
    <Timer timerName="HaHa" clock="80:08" />
 {/if}
