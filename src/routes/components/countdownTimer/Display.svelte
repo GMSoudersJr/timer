@@ -8,16 +8,19 @@
       currentIntervalId,
       timerToDisplay,
    } from '$lib/stores.js';
-   import { minutesAndSecondsString, startAnInterval } from '$lib/utils.js';
+
+   import {
+      minutesAndSecondsString,
+      calculateSeconds,
+   } from '$lib/utils.js';
+
    import StartStopButton from './StartStopButton.svelte';
    import Timer from './Timer.svelte';
    import ActivityTimer from './ActivityTimer.svelte';
    import RecoveryTimer from './RecoveryTimer.svelte';
 
-   $: activityCountdownSeconds = Number.parseInt($activeSeconds + ($activeMinutes * 60));
-   $: recoveryCountdownSeconds = Number.parseInt($inactiveSeconds + ($inactiveMinutes * 60));
-
-   $: timerDisplay = minutesAndSecondsString(activityCountdownSeconds);
+   $: activityCountdownSeconds = calculateSeconds($activeMinutes, $activeSeconds);
+   $: recoveryCountdownSeconds = calculateSeconds($inactiveMinutes, $inactiveSeconds);
 
    $: activityMinutesAndSecondsString
    = minutesAndSecondsString(activityCountdownSeconds);
@@ -26,7 +29,6 @@
    = minutesAndSecondsString(recoveryCountdownSeconds);
 
    const handleTick = () => {
-      console.log("$currentIntervalId", $currentIntervalId);
       if (activityCountdownSeconds > 0 && $runningTimer)  {
          activityCountdownSeconds--;
          console.log("Activity TICK! TICK!");
@@ -35,11 +37,10 @@
          clearInterval($currentIntervalId);
          console.log("Activity Timer finished. Cleared Interval", $currentIntervalId);
          currentIntervalId.update(id => id = 0);
-
          //TODO BEEP!
       }
       if (activityCountdownSeconds == 0 && recoveryCountdownSeconds > 0) {
-         timerToDisplay.update(value => value = "recovery");
+         timerToDisplay.update(name => name = "recovery");
          recoveryCountdownSeconds--;
          console.log("Recovery TOCK! TOCK!");
       }
@@ -47,14 +48,14 @@
          $runningTimer ) {
          console.log("Recovery finished");
          clearInterval($currentIntervalId);
+         currentIntervalId.update(id => id = 0);
          runningTimer.update(status => status = !status);
-         timerToDisplay.update(display => display = "DONE");
-
+         timerToDisplay.update(display => display = null);
+         activityCountdownSeconds = Number.parseInt($activeSeconds + ($activeMinutes * 60));
+         recoveryCountdownSeconds = Number.parseInt($inactiveSeconds + ($inactiveMinutes * 60));
+         //TODO BEEP!
       }
    }
-   /*
-   <ActivityTimer callback={handleTick} clock={activityMinutesAndSecondsString} />
-    */
 </script>
 
 <StartStopButton callback={handleTick}/>

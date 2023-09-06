@@ -1,10 +1,10 @@
 <script>
+  import { onDestroy } from 'svelte';
   import {
     runningTimer,
     currentIntervalId,
     timerToDisplay
   } from '$lib/stores.js';
-  import { startAnInterval } from '$lib/utils.js';
 
   export let callback;
 
@@ -13,6 +13,11 @@
     currentIntervalId.update(id => id = intervalId);
     console.log("set interval", $currentIntervalId);
   };
+
+  onDestroy(() => {
+    clearInterval($currentIntervalId);
+    currentIntervalId.update(id => id = 0);
+  });
 
   function handleClick() {
     runningTimer.update(status => status = !status);
@@ -32,21 +37,6 @@
       console.log("currentIntervalId:", $currentIntervalId);
     }
   }
-
-  function handleClickOld() {
-    runningTimer.update(status => status = !status);
-    if ( !$timerToDisplay ) {
-      timerToDisplay.update(timer => timer = "activity");
-    }
-    console.log("runningTimer", $runningTimer);
-    if ( $runningTimer) {
-      startAnInterval(callback);
-    } else if (currentIntervalId && !$runningTimer) {
-      clearInterval($currentIntervalId);
-      console.log("cleared interval", $currentIntervalId);
-    }
-  }
-
 </script>
 
 <button
