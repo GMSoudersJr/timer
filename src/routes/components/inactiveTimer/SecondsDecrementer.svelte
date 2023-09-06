@@ -1,5 +1,5 @@
 <script>
-  import { inactiveSeconds } from '$lib/stores.js';
+  import { recoverySeconds } from '$lib/stores.js';
 </script>
 
 <button
@@ -7,7 +7,7 @@
   title="Decrease Recovery Seconds"
   type="button"
   class="button-decrementer"
-  on:click={ inactiveSeconds.decrement }
+  on:click={ recoverySeconds.decrement }
 >
   ➖
 </button>

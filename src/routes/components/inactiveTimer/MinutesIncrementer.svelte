@@ -1,5 +1,5 @@
 <script>
-  import { inactiveMinutes } from '$lib/stores.js';
+  import { recoveryMinutes } from '$lib/stores.js';
 </script>
 
 <button
@@ -7,7 +7,7 @@
   title="Increase Recovery Minutes"
   type="button"
   class="button-incrementer"
-  on:click={ inactiveMinutes.increment }
+  on:click={ recoveryMinutes.increment }
 >
   ➕
 </button>

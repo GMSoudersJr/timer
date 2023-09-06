@@ -1,5 +1,5 @@
 <script>
-  import { activeSeconds } from '$lib/stores.js';
+  import { activitySeconds } from '$lib/stores.js';
 </script>
 
 <button
@@ -7,7 +7,7 @@
   title="Increase Activity Seconds"
   type="button"
   class="button-incrementer"
-  on:click={ activeSeconds.increment }
+  on:click={ activitySeconds.increment }
 >
   ➕
 </button>

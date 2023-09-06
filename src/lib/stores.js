@@ -23,13 +23,11 @@ function createMinuteOrSecondObject() {
 	};
 }
 
-export const activeSeconds = createMinuteOrSecondObject();
-export const activeMinutes = createMinuteOrSecondObject();
-export const activeTimeInSeconds = writable(0);
+export const activitySeconds = createMinuteOrSecondObject();
+export const activityMinutes = createMinuteOrSecondObject();
 
-export const inactiveSeconds = createMinuteOrSecondObject();
-export const inactiveMinutes= createMinuteOrSecondObject();
-export const inactiveTimeInSeconds = writable(0);
+export const recoverySeconds = createMinuteOrSecondObject();
+export const recoveryMinutes= createMinuteOrSecondObject();
 
 export const runningTimer = writable(false);
 export const currentIntervalId = writable(null);

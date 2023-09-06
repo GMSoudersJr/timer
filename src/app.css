@@ -7,6 +7,9 @@
 body {
   background: #F1F1F1;
   filter: brightness(70%);
+  --fontFamilyDigital: "Orbitron", sans-serif;
+  --fontFamilyEmoji: "Noto Color Emoji", sans-serif;
+  --fontFamilyText: "Roboto", sans-serif;
 }
 h1 {
   color: #000000;
@@ -23,13 +26,24 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: var(--fontFamilyText);
 }
 .set-minutes-and-seconds-container {
   display: flex;
 }
-
+.timer-text {
+  font-family: var(--fontFamilyText);
+}
+.timer-digits {
+  font-family: var(--fontFamilyDigital);
+}
 .button-incrementer,
 .button-decrementer {
   height: 30px;
   width: 30px;
+  font-family: var(--fontFamilyEmoji);
+}
+
+.button-timer {
+   padding: 15px 20px;
 }

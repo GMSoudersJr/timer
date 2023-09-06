@@ -1,9 +1,9 @@
 <script>
    import {
-      activeSeconds,
-      activeMinutes,
-      inactiveSeconds,
-      inactiveMinutes,
+      activitySeconds,
+      activityMinutes,
+      recoverySeconds,
+      recoveryMinutes,
       runningTimer,
       currentIntervalId,
       timerToDisplay,
@@ -15,12 +15,13 @@
    } from '$lib/utils.js';
 
    import StartStopButton from './StartStopButton.svelte';
+   import ResetButton from './ResetButton.svelte';
    import Timer from './Timer.svelte';
    import ActivityTimer from './ActivityTimer.svelte';
    import RecoveryTimer from './RecoveryTimer.svelte';
 
-   $: activityCountdownSeconds = calculateSeconds($activeMinutes, $activeSeconds);
-   $: recoveryCountdownSeconds = calculateSeconds($inactiveMinutes, $inactiveSeconds);
+   $: activityCountdownSeconds = calculateSeconds($activityMinutes, $activitySeconds);
+   $: recoveryCountdownSeconds = calculateSeconds($recoveryMinutes, $recoverySeconds);
 
    $: activityMinutesAndSecondsString
    = minutesAndSecondsString(activityCountdownSeconds);
@@ -74,25 +75,42 @@
       timerToDisplay.update(display => display = null);
    }
    const resetTheTimers = () => {
-      activityCountdownSeconds = calculateSeconds($activeMinutes, $activeSeconds);
-      recoveryCountdownSeconds = calculateSeconds($inactiveMinutes, $inactiveSeconds);
+      activityCountdownSeconds = calculateSeconds($activityMinutes, $activitySeconds);
+      recoveryCountdownSeconds = calculateSeconds($recoveryMinutes, $recoverySeconds);
    }
 </script>
 
-<StartStopButton
-   activityCallback={handleTick}
-   recoveryCallback={recoveryTick}
-/>
-{#if $timerToDisplay == "activity"}
-   <ActivityTimer
-      callback={handleTick}
-      clock={activityMinutesAndSecondsString}
-   />
-{:else if $timerToDisplay == "recovery"}
-   <RecoveryTimer
-      callback={recoveryTick}
-      clock={recoveryMinutesAndSecondsString}
-   />
-{:else}
-   <Timer timerName="HaHa" clock="80:08" />
-{/if}
+<div class="container">
+   <div class="timer-display-container">
+   {#if $timerToDisplay == "activity"}
+      <ActivityTimer
+         callback={handleTick}
+         clock={activityMinutesAndSecondsString}
+      />
+   {:else if $timerToDisplay == "recovery"}
+      <RecoveryTimer
+         callback={recoveryTick}
+         clock={recoveryMinutesAndSecondsString}
+      />
+   {:else}
+      <Timer timerName="HaHa" clock="80:08" />
+   {/if}
+   </div>
+   <div class="button-container">
+      <StartStopButton
+         activityCallback={handleTick}
+         recoveryCallback={recoveryTick}
+      />
+      <ResetButton />
+   </div>
+</div>
+
+<style>
+   .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+   }
+
+</style>

@@ -1,5 +1,5 @@
 <script>
-  import { activeMinutes } from '$lib/stores.js';
+  import { activityMinutes } from '$lib/stores.js';
 </script>
 
 <button
@@ -7,7 +7,7 @@
   title="Decrease Activity Minutes"
   type="button"
   class="button-decrementer"
-  on:click={ activeMinutes.decrement }
+  on:click={ activityMinutes.decrement }
 >
   ➖
 </button>

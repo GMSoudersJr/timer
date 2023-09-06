@@ -51,7 +51,7 @@
   id="button-timer-start-stop"
   title="Start and Stop the Timer"
   type="button"
-  class="button-timer-start-stop"
+  class="button-timer"
   on:click={ handleClick }
 >
   {$runningTimer ? "STOP" : "START"}

@@ -1,10 +1,11 @@
 <script>
-  import { activeSeconds } from '$lib/stores.js';
+  import { activitySeconds } from '$lib/stores.js';
 </script>
 
 <h1
   id="activity-seconds"
   title="Activity Seconds"
+  class="timer-digits"
 >
-  {$activeSeconds < 10 ? `0${$activeSeconds}` : $activeSeconds}
+  {$activitySeconds < 10 ? `0${$activitySeconds}` : $activitySeconds}
 </h1>
