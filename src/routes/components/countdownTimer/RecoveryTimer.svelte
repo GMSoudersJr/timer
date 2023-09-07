@@ -10,7 +10,9 @@
 </script>
 
 <div class="container">
-  <h2>Recovery</h2>
+  <h2 class="timer-text">
+    Recovery
+  </h2>
   <h1 class="timer">
     {clock}
   </h1>

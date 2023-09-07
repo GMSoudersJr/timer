@@ -11,7 +11,9 @@
   id="timer-display"
   class="set-timer-display"
 >
-  <h1>Activity Time</h1>
+  <h2 class="timer-text">
+    Activity Time
+  </h2>
   <div id="activity-timer" class="set-minutes-and-seconds-container">
     <div class="set-minutes-container">
       <MinutesDisplay />

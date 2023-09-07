@@ -10,9 +10,10 @@ body {
   --fontFamilyDigital: "Orbitron", sans-serif;
   --fontFamilyEmoji: "Noto Color Emoji", sans-serif;
   --fontFamilyText: "Roboto", sans-serif;
+  --colorText: #36454F;
 }
-h1 {
-  color: #000000;
+h1, h2 {
+  color: var(--colorText);
 }
 .app-container {
   display: flex;
@@ -43,7 +44,9 @@ h1 {
   width: 30px;
   font-family: var(--fontFamilyEmoji);
 }
-
+.timer {
+  font-family: var(--fontFamilyDigital);
+}
 .button-timer {
    padding: 15px 20px;
 }

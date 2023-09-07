@@ -10,7 +10,9 @@
 </script>
 
 <div class="container">
-  <h2>Activity</h2>
+  <h2 class="timer-text">
+    Activity
+  </h2>
   <h1 class="timer">
     {clock}
   </h1>

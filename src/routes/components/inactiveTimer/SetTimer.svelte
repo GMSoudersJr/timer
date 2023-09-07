@@ -11,7 +11,7 @@
   id="timer-display"
   class="set-timer-display"
 >
-  <h1>Recovery Time</h1>
+  <h2 class="timer-text">Recovery Time</h2>
   <div id="recovery-timer" class="set-minutes-and-seconds-container">
     <div class="set-minutes-container">
       <MinutesDisplay />
