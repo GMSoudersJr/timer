@@ -19,10 +19,13 @@ body {
 }
 h1, h2 {
   color: var(--colorNavy);
+  font-family: var(--fontFamilyText)
 }
 .app-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 4em;
 }
 .set-timer-display,
