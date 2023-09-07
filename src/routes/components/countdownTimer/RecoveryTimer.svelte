@@ -1,4 +1,5 @@
 <script>
+  import { recoveryTimerTitleString } from '$lib/strings.js';
   import { onInterval } from '$lib/utils.js';
   import { currentIntervalId } from '$lib/stores.js';
   export let clock;
@@ -9,9 +10,15 @@
   }
 </script>
 
+<svelte:head>
+   <title>
+       🧘 {clock}
+   </title>
+</svelte:head>
+
 <div class="container">
   <h2 class="timer-text">
-    Recovery
+    {recoveryTimerTitleString}
   </h2>
   <h1 class="timer">
     {clock}

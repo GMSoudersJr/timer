@@ -1,6 +1,7 @@
 <script>
   import { onInterval } from '$lib/utils.js';
   import { currentIntervalId } from '$lib/stores.js';
+  import { activityTimerTitleString } from '$lib/strings.js';
   export let clock;
   export let callback;
 
@@ -9,9 +10,15 @@
   }
 </script>
 
+<svelte:head>
+   <title>
+     💦 {clock}
+   </title>
+</svelte:head>
+
 <div class="container">
   <h2 class="timer-text">
-    Activity
+    {activityTimerTitleString}
   </h2>
   <h1 class="timer">
     {clock}

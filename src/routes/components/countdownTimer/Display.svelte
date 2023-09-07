@@ -17,7 +17,7 @@
 
    import StartStopButton from './StartStopButton.svelte';
    import ResetButton from './ResetButton.svelte';
-   import Timer from './Timer.svelte';
+   import NotTimer from './NotTimer.svelte';
    import ActivityTimer from './ActivityTimer.svelte';
    import RecoveryTimer from './RecoveryTimer.svelte';
    import Alarm from './Alarm.svelte';
@@ -32,7 +32,6 @@
    = minutesAndSecondsString(recoveryCountdownSeconds);
 
    let soundTheAlarm;
-   console.log("Sound the Alarm", soundTheAlarm);
    let timeoutId;
 
 
@@ -40,45 +39,37 @@
    const activityTick = () => {
       if (activityCountdownSeconds > 0 && $runningTimer)  {
          activityCountdownSeconds--;
-         console.log("Activity TICK! TICK!");
       }
       if ( activityCountdownSeconds == 0 && $timerToDisplay === 'activity' ) {
          soundTheAlarm = true;
          clearInterval($currentIntervalId);
-         console.log("Activity Timer finished. Cleared Interval", $currentIntervalId);
          currentIntervalId.update(id => id = 0);
          //TODO BEEP!
-         timeoutId = setTimeout(() => {
+         currentTimeoutId.set(setTimeout(() => {
             timerToDisplay.update(name => name = "recovery");
+            clearInterval($currentIntervalId);
+            currentIntervalId.set(null);
             soundTheAlarm = false;
-         }, 1500);
-         currentTimeoutId.set(timeoutId);
-         console.log("timeoutId:", timeoutId);
+         }, 1500))
       }
    }
 
    const recoveryTick = () => {
       if (recoveryCountdownSeconds > 0 && $runningTimer)  {
          recoveryCountdownSeconds--;
-         console.log("Recovery TOCK! TOCK!");
       } else if ( recoveryCountdownSeconds == 0 && $timerToDisplay === 'recovery' ) {
          soundTheAlarm = true;
          //TODO BEEP!
          clearInterval($currentIntervalId);
-         console.log("Recovery Timer finished. Cleared Interval", $currentIntervalId);
          currentIntervalId.update(id => id = 0);
          clearTimeout($currentTimeoutId);
          currentTimeoutId.set(null);
-         console.log("Sound the Alarm", soundTheAlarm);
-         timeoutId = setTimeout(() => {
-            console.log("RESET IT ALL")
+         currentTimeoutId.set(setTimeout(() => {
             resetTheDisplay();
             resetTheTimers();
             resetTheButton();
             soundTheAlarm = false;
-         }, 1500);
-         currentTimeoutId.set(timeoutId);
-         console.log("timeoutId:", timeoutId);
+         }, 1500));
       }
    }
 
@@ -107,7 +98,7 @@
          clock={recoveryMinutesAndSecondsString}
       />
    {:else}
-      <Timer timerName="HaHa" clock="80:08" />
+      <NotTimer />
    {/if}
    </div>
    <div class="button-container">

@@ -1,4 +1,5 @@
 <script>
+  import { recoveryTimerString } from '$lib/strings.js';
   import MinutesDisplay from './MinutesDisplay.svelte';
   import SecondsDisplay from './SecondsDisplay.svelte';
   import MinutesIncrementer from './MinutesIncrementer.svelte';
@@ -11,7 +12,9 @@
   id="timer-display"
   class="set-timer-display"
 >
-  <h2 class="timer-text">Recovery Time</h2>
+  <h2 class="timer-text">
+    {recoveryTimerString}
+  </h2>
   <div id="recovery-timer" class="set-minutes-and-seconds-container">
     <div class="set-minutes-container">
       <MinutesDisplay />

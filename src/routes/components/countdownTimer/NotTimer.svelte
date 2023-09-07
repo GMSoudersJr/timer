@@ -1,13 +1,13 @@
 <script>
-  export let timerName;
-  export let clock;
 </script>
 
 <div class="container">
-  <h2>{timerName}</h2>
-  <h1 class="timer">
-    {clock}
+  <h1>
+    Set Timers above
   </h1>
+  <h2 class="timer-digits">
+    Let's Go!
+  </h2>
 </div>
 
 <style>

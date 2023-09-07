@@ -1,8 +1,11 @@
-export const display = {
-	activity: {
-		title: "Activity"
-	},
-	recovery: {
-		title: "Recovery"
-	},
-}
+export const appTitleString = "INTERVAL TIMER ⏲";
+export const headTitleString = "⏲ INTERVAL TIMER";
+export const activityTimerString = "Activity 💦 Time";
+export const recoveryTimerString = "Recovery 🧘 Time";
+export const activityTimerTitleString = "Activity 💦";
+export const recoveryTimerTitleString = "Recovery 🧘";
+export const playButtonEmoji = "▶";
+export const pauseButtonEmoji = "⏸";
+export const resetButtonEmoji = "🔄";
+export const introHeaderString = "Set Timers Above";
+export const introSubheaderString = "Let's Go!";

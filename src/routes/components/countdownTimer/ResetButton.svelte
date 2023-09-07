@@ -17,7 +17,9 @@
     recoveryMinutes.reset();
     timerToDisplay.set(null);
     runningTimer.set(false);
+    clearTimeout($currentTimeoutId);
     currentTimeoutId.set(null);
+    clearInterval($currentIntervalId);
     currentIntervalId.set(null);
   }
 </script>
@@ -29,7 +31,7 @@
   class="button-timer"
   on:click={ handleClick }
 >
-  RESET
+  🔄
 </button>
 
 <style>

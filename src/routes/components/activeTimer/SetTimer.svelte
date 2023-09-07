@@ -1,4 +1,5 @@
 <script>
+  import { activityTimerString } from '$lib/strings.js';
   import MinutesDisplay from './MinutesDisplay.svelte';
   import SecondsDisplay from './SecondsDisplay.svelte';
   import MinutesIncrementer from './MinutesIncrementer.svelte';
@@ -12,7 +13,7 @@
   class="set-timer-display"
 >
   <h2 class="timer-text">
-    Activity Time
+    {activityTimerString}
   </h2>
   <div id="activity-timer" class="set-minutes-and-seconds-container">
     <div class="set-minutes-container">

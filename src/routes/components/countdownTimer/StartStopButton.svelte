@@ -23,8 +23,6 @@
       intervalId = 0;
     }
     currentIntervalId.update(id => id = intervalId);
-    console.log("Continuing the countdown")
-    console.log("Starting new interval:", $currentIntervalId);
   };
 
   onDestroy(() => {
@@ -36,9 +34,6 @@
 
   function handleClick() {
     runningTimer.update(status => status = !status);
-    console.log("currentIntervalId:", $currentIntervalId);
-    console.log("runningTimer", $runningTimer);
-    console.log("timerToDisplay:", $timerToDisplay);
 
     if ( $runningTimer && !$timerToDisplay ) {
       timerToDisplay.update(name => name = "activity");
@@ -46,9 +41,7 @@
       startInterval();
     } else if ( !$runningTimer && $timerToDisplay ) {
       clearInterval($currentIntervalId);
-      console.log("cleared interval:", $currentIntervalId);
       currentIntervalId.update(id => id = 0);
-      console.log("currentIntervalId:", $currentIntervalId);
     }
   }
 </script>
@@ -58,8 +51,12 @@
   title="Start and Stop the Timer"
   type="button"
   class="button-timer"
+  style={$runningTimer ? "color: var(--colorRed)" : "color: var(--colorGreen)"}
   on:click={ handleClick }
   disabled={ disableStart }
 >
-  {$runningTimer ? "STOP" : "START"}
+  {$runningTimer ? "⏸" : "▶"}
 </button>
+
+<style>
+</style>
