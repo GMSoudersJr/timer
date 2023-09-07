@@ -6,7 +6,9 @@
 </script>
 
 <div class="app-container">
-  <h1>Interval Timer</h1>
+  <h1 class="app-title">
+    Interval Timer
+  </h1>
   <ActivityTimer />
   <RecoveryTimer />
   <Display />

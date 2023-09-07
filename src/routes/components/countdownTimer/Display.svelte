@@ -6,6 +6,7 @@
       recoveryMinutes,
       runningTimer,
       currentIntervalId,
+      currentTimeoutId,
       timerToDisplay,
    } from '$lib/stores.js';
 
@@ -19,6 +20,7 @@
    import Timer from './Timer.svelte';
    import ActivityTimer from './ActivityTimer.svelte';
    import RecoveryTimer from './RecoveryTimer.svelte';
+   import Alarm from './Alarm.svelte';
 
    $: activityCountdownSeconds = calculateSeconds($activityMinutes, $activitySeconds);
    $: recoveryCountdownSeconds = calculateSeconds($recoveryMinutes, $recoverySeconds);
@@ -29,21 +31,28 @@
    $: recoveryMinutesAndSecondsString
    = minutesAndSecondsString(recoveryCountdownSeconds);
 
+   let soundTheAlarm;
+   console.log("Sound the Alarm", soundTheAlarm);
    let timeoutId;
 
-   const handleTick = () => {
+
+
+   const activityTick = () => {
       if (activityCountdownSeconds > 0 && $runningTimer)  {
          activityCountdownSeconds--;
          console.log("Activity TICK! TICK!");
       }
       if ( activityCountdownSeconds == 0 && $timerToDisplay === 'activity' ) {
+         soundTheAlarm = true;
          clearInterval($currentIntervalId);
          console.log("Activity Timer finished. Cleared Interval", $currentIntervalId);
          currentIntervalId.update(id => id = 0);
          //TODO BEEP!
          timeoutId = setTimeout(() => {
             timerToDisplay.update(name => name = "recovery");
-         }, 1000);
+            soundTheAlarm = false;
+         }, 1500);
+         currentTimeoutId.set(timeoutId);
          console.log("timeoutId:", timeoutId);
       }
    }
@@ -53,18 +62,23 @@
          recoveryCountdownSeconds--;
          console.log("Recovery TOCK! TOCK!");
       } else if ( recoveryCountdownSeconds == 0 && $timerToDisplay === 'recovery' ) {
+         soundTheAlarm = true;
+         //TODO BEEP!
          clearInterval($currentIntervalId);
          console.log("Recovery Timer finished. Cleared Interval", $currentIntervalId);
          currentIntervalId.update(id => id = 0);
-         clearTimeout(timeoutId);
+         clearTimeout($currentTimeoutId);
+         currentTimeoutId.set(null);
+         console.log("Sound the Alarm", soundTheAlarm);
          timeoutId = setTimeout(() => {
             console.log("RESET IT ALL")
             resetTheDisplay();
             resetTheTimers();
             resetTheButton();
-         }, 1000);
+            soundTheAlarm = false;
+         }, 1500);
+         currentTimeoutId.set(timeoutId);
          console.log("timeoutId:", timeoutId);
-         //TODO BEEP!
       }
    }
 
@@ -84,7 +98,7 @@
    <div class="timer-display-container">
    {#if $timerToDisplay == "activity"}
       <ActivityTimer
-         callback={handleTick}
+         callback={activityTick}
          clock={activityMinutesAndSecondsString}
       />
    {:else if $timerToDisplay == "recovery"}
@@ -98,11 +112,14 @@
    </div>
    <div class="button-container">
       <StartStopButton
-         activityCallback={handleTick}
+         activityCallback={activityTick}
          recoveryCallback={recoveryTick}
       />
       <ResetButton />
    </div>
+   {#if soundTheAlarm == true}
+      <Alarm />
+   {/if}
 </div>
 
 <style>

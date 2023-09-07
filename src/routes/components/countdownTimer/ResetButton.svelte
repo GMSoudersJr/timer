@@ -6,6 +6,8 @@
     activityMinutes,
     recoverySeconds,
     recoveryMinutes,
+    currentIntervalId,
+    currentTimeoutId,
   } from '$lib/stores.js';
 
   function handleClick() {
@@ -15,6 +17,8 @@
     recoveryMinutes.reset();
     timerToDisplay.set(null);
     runningTimer.set(false);
+    currentTimeoutId.set(null);
+    currentIntervalId.set(null);
   }
 </script>
 

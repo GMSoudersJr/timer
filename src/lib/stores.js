@@ -30,5 +30,6 @@ export const recoverySeconds = createMinuteOrSecondObject();
 export const recoveryMinutes= createMinuteOrSecondObject();
 
 export const runningTimer = writable(false);
-export const currentIntervalId = writable(null);
 export const timerToDisplay = writable(null);
+export const currentIntervalId = writable(null);
+export const currentTimeoutId = writable(null);
