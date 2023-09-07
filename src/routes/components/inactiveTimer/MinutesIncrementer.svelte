@@ -1,5 +1,5 @@
 <script>
-  import { recoveryMinutes } from '$lib/stores.js';
+  import { recoveryMinutes, runningTimer } from '$lib/stores.js';
 </script>
 
 <button
@@ -8,6 +8,7 @@
   type="button"
   class="button-incrementer"
   on:click={ recoveryMinutes.increment }
+  disabled={ $runningTimer }
 >
   ➕
 </button>

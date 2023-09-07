@@ -5,15 +5,20 @@
   user-select: none;
 }
 body {
-  background: #F1F1F1;
+  background: var(--colorBackground);
   filter: brightness(70%);
   --fontFamilyDigital: "Orbitron", sans-serif;
   --fontFamilyEmoji: "Noto Color Emoji", sans-serif;
   --fontFamilyText: "Roboto", sans-serif;
+
   --colorText: #36454F;
+  --colorBackground: #FFF5E0;
+  --colorNavy: #141E46;
+  --colorRed: #BB2525;
+  --colorSalmon: #FF6969;
 }
 h1, h2 {
-  color: var(--colorText);
+  color: var(--colorNavy);
 }
 .app-container {
   display: flex;
@@ -35,7 +40,8 @@ h1, h2 {
 .timer-text {
   font-family: var(--fontFamilyText);
 }
-.timer-digits {
+.timer-digits, .time-colon{
+  color: var(--colorRed);
   font-family: var(--fontFamilyDigital);
 }
 .button-incrementer,
@@ -49,4 +55,6 @@ h1, h2 {
 }
 .button-timer {
    padding: 15px 20px;
+   font-family: var(--fontFamilyDigital);
+   letter-spacing: .1em;
 }

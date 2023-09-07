@@ -1,5 +1,5 @@
 <script>
-  import { activityMinutes } from '$lib/stores.js';
+  import { activityMinutes, runningTimer } from '$lib/stores.js';
 </script>
 
 <button
@@ -8,6 +8,7 @@
   type="button"
   class="button-decrementer"
   on:click={ activityMinutes.decrement }
+  disabled={ $runningTimer }
 >
   ➖
 </button>

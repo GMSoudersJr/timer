@@ -3,7 +3,11 @@
   import {
     runningTimer,
     currentIntervalId,
-    timerToDisplay
+    timerToDisplay,
+    activitySeconds,
+    activityMinutes,
+    recoverySeconds,
+    recoveryMinutes,
   } from '$lib/stores.js';
 
   export let activityCallback;
@@ -27,6 +31,8 @@
     clearInterval($currentIntervalId);
     currentIntervalId.update(id => id = 0);
   });
+
+  $: disableStart = $activitySeconds + $activityMinutes + $recoverySeconds + $recoveryMinutes == 0;
 
   function handleClick() {
     runningTimer.update(status => status = !status);
@@ -53,6 +59,7 @@
   type="button"
   class="button-timer"
   on:click={ handleClick }
+  disabled={ disableStart }
 >
   {$runningTimer ? "STOP" : "START"}
 </button>
