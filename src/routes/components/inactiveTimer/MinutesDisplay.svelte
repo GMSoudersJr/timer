@@ -1,11 +1,12 @@
 <script>
   import { recoveryMinutes } from '$lib/stores.js';
+  import { recoveryMinutesTitle } from '$lib/strings.js';
 </script>
 
 
 <h1
   id="recovery-minutes"
-  title="Recovery Minutes"
+  title={ recoveryMinutesTitle }
   class="timer-digits"
 >
   {$recoveryMinutes < 10 ? `0${$recoveryMinutes}` : $recoveryMinutes}

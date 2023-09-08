@@ -1,10 +1,11 @@
 <script>
   import { activityMinutes, runningTimer } from '$lib/stores.js';
+  import { activityMinutesDecrementorTitle } from '$lib/strings.js';
 </script>
 
 <button
   id="active-minutes-decrementer"
-  title="Decrease Activity Minutes"
+  title={ activityMinutesDecrementorTitle }
   type="button"
   class="button-decrementer"
   on:click={ activityMinutes.decrement }

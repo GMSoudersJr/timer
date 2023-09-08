@@ -1,5 +1,6 @@
 <script>
   import { recoveryMinutes, runningTimer } from '$lib/stores.js';
+  import { recoveryMinutesIncrementorTitle } from '$lib/strings.js';
 </script>
 
 <button

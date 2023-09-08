@@ -1,6 +1,7 @@
 <script>
   import '../app.css';
-  import { appTitleString, headTitleString } from '$lib/strings.js';
+  import { headTitleString } from '$lib/strings.js';
+  import AppTitle from './components/AppTitle.svelte';
   import ActivityTimer from './components/activeTimer/SetTimer.svelte';
   import RecoveryTimer from './components/inactiveTimer/SetTimer.svelte';
   import Display from './components/countdownTimer/Display.svelte';
@@ -13,9 +14,7 @@
 </svelte:head>
 
 <div class="app-container">
-  <h1 class="app-title">
-    {appTitleString}
-  </h1>
+  <AppTitle />
   <ActivityTimer />
   <RecoveryTimer />
   <Display />
