@@ -1,13 +1,14 @@
 <script>
+  import { directionsHeaderString, directionsSubheaderString } from '$lib/strings.js';
 </script>
 
 <div class="container">
-  <h1>
-    Set Timers above
-  </h1>
-  <h2 class="timer-digits">
-    Let's Go!
+  <h2 class="directions">
+    {directionsHeaderString}
   </h2>
+  <p class="timer-digits timer">
+    {directionsSubheaderString}
+  </p>
 </div>
 
 <style>

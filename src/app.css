@@ -57,6 +57,7 @@ h1, h2 {
 }
 .timer {
   font-family: var(--fontFamilyDigital);
+  font-size: 3em;
 }
 .button-timer {
    font-family: var(--fontFamilyEmoji);

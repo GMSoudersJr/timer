@@ -20,9 +20,9 @@
   <h2 class="timer-text">
     {activityTimerTitleString}
   </h2>
-  <h1 class="timer">
+  <p class="timer">
     {clock}
-  </h1>
+  </p>
 </div>
 
 <style>
