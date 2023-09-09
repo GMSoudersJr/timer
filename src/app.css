@@ -41,6 +41,7 @@ h1, h2 {
 }
 .set-minutes-and-seconds-container {
   display: flex;
+  column-gap: 1em;
 }
 .timer-text {
   font-family: var(--fontFamilyText);
@@ -51,9 +52,13 @@ h1, h2 {
 }
 .button-incrementer,
 .button-decrementer {
-  height: 30px;
-  width: 30px;
+  height: 45px;
+  width: 45px;
   font-family: var(--fontFamilyEmoji);
+}
+.delta-button-container {
+  display: flex;
+  column-gap: 1em;
 }
 .timer {
   font-family: var(--fontFamilyDigital);

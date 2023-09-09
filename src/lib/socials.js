@@ -1,7 +1,7 @@
   export const socials = [
     {
       id: "github",
-      href: "https://github.com/GMSoudersJr/random-name-picker",
+      href: "https://github.com/GMSoudersJr/timer",
       class: "icon icon-square",
       iconUrl: "https://lh3.googleusercontent.com/pw/AIL4fc-MFtoDa7TLMjPh17L35GbinX_j4vmO2fC14WFIWfuixNTvnpy_KtLIzgKepFtpbaFuncCgFVQgXue6rCHpmFrY05G8Hmr11YejBtehiwI5MkSRFLu_qn65XkSWg7cceqYUjuYZqzkr5o-qKQWL0djytg=w240-h240-s-no?authuser=0",
       iconUrlLight: "https://lh3.googleusercontent.com/pw/AIL4fc8YKL8pEKc5WSoPX9onJhSk5j-4-68MBln6PsoDcrr2lGBSxaiidZLp0T-ufKICz9hQP9ZE3bssftK3J30AWFZtBEaEhLMC0NafOMeeOdpgD8A_qrw9NicNsqLZieXz4K_XYs7MN8p29LLB-_0Z92s4eg=w230-h225-s-no?authuser=0",
