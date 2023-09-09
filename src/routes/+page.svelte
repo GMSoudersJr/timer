@@ -1,5 +1,4 @@
 <script>
-  import '../app.css';
   import { headTitleString } from '$lib/strings.js';
   import AppTitle from './components/AppTitle.svelte';
   import ActivityTimer from './components/activeTimer/SetTimer.svelte';

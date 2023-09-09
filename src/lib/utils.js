@@ -27,3 +27,8 @@ export function calculateSeconds(minutes, seconds) {
 	countdownSeconds += (60 * Number.parseInt(minutes))
 	return countdownSeconds;
 }
+
+export const thisYear = () => {
+	const date = new Date(Date.now());
+	return date.getFullYear();
+}
