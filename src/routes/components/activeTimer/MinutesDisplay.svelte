@@ -8,5 +8,6 @@
   title={ activityMinutesTitle }
   class="timer-digits"
 >
-  {$activityMinutes < 10 ? `0${$activityMinutes}` : $activityMinutes}
+  {$activityMinutes < 10 ? `0${$activityMinutes}` : $activityMinutes} m
+
 </h1>

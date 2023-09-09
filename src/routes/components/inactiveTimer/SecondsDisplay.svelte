@@ -8,5 +8,5 @@
   title={ recoverySecondsTitle }
   class="timer-digits"
 >
-  {$recoverySeconds < 10 ? `0${$recoverySeconds}` : $recoverySeconds}
+  {$recoverySeconds < 10 ? `0${$recoverySeconds}` : $recoverySeconds} s
 </h1>
