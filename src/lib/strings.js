@@ -1,5 +1,5 @@
 export const appTitleString = "⏲ INTERVAL TIMER ⏰";
-export const headTitleString = "⏲ INTERVAL TIMER";
+export const headTitleString = "Interval Timer";
 export const activityTimerString = "Activity 💦 Time";
 export const recoveryTimerString = "Recovery 🧘 Time";
 export const activityTimerTitleString = "Activity 💦";
