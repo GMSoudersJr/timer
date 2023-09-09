@@ -120,5 +120,9 @@
       justify-content: center;
       align-items: center;
    }
+   .button-container {
+      display: flex;
+      gap: 1em;
+   }
 
 </style>
