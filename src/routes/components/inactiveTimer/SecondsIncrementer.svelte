@@ -8,7 +8,7 @@
   title={ recoverySecondsIncrementorTitle }
   type="button"
   class="button-incrementer"
-  on:click={ recoverySeconds.increment }
+  onclick={recoverySeconds.increment}
   disabled={ $runningTimer }
 >
   ➕

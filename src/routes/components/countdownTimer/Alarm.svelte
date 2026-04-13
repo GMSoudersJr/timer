@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { timerToDisplay } from '$lib/stores.js';
-  let audio
+  let audio = $state()
 
   onMount(() => {
     audio

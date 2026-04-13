@@ -8,7 +8,7 @@
   title="Increase Recovery Minutes"
   type="button"
   class="button-incrementer"
-  on:click={ recoveryMinutes.increment }
+  onclick={recoveryMinutes.increment}
   disabled={ $runningTimer }
 >
   ➕

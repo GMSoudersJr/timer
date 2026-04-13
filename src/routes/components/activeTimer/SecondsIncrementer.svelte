@@ -8,7 +8,7 @@
   title={ activitySecondsIncrementorTitle }
   type="button"
   class="button-incrementer"
-  on:click={ activitySeconds.increment }
+  onclick={activitySeconds.increment}
   disabled={ $runningTimer }
 >
   ➕

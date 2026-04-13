@@ -29,7 +29,7 @@
   title="Reset the Timers"
   type="button"
   class="button-timer"
-  on:click={ handleClick }
+  onclick={handleClick}
 >
   🔄
 </button>

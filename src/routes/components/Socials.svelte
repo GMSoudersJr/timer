@@ -1,7 +1,7 @@
 <script>
   import { socials } from '$lib/socials.js';
   let innerWidth = 0;
-  $: displayIconLight = innerWidth <= 64 * 16;
+  let displayIconLight = $derived(innerWidth <= 64 * 16);
 </script>
 
 <section class="contact" id="contact">

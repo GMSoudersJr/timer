@@ -22,16 +22,16 @@
    import RecoveryTimer from './RecoveryTimer.svelte';
    import Alarm from './Alarm.svelte';
 
-   $: activityCountdownSeconds = calculateSeconds($activityMinutes, $activitySeconds);
-   $: recoveryCountdownSeconds = calculateSeconds($recoveryMinutes, $recoverySeconds);
+   let activityCountdownSeconds = $derived(calculateSeconds($activityMinutes, $activitySeconds));
+   let recoveryCountdownSeconds = $derived(calculateSeconds($recoveryMinutes, $recoverySeconds));
 
-   $: activityMinutesAndSecondsString
-   = minutesAndSecondsString(activityCountdownSeconds);
+   let activityMinutesAndSecondsString
+   = $derived(minutesAndSecondsString(activityCountdownSeconds));
 
-   $: recoveryMinutesAndSecondsString
-   = minutesAndSecondsString(recoveryCountdownSeconds);
+   let recoveryMinutesAndSecondsString
+   = $derived(minutesAndSecondsString(recoveryCountdownSeconds));
 
-   let soundTheAlarm;
+   let soundTheAlarm = $state();
    let timeoutId;
 
 

@@ -2,8 +2,7 @@
   import { onInterval } from '$lib/utils.js';
   import { currentIntervalId } from '$lib/stores.js';
   import { activityTimerTitleString } from '$lib/strings.js';
-  export let clock;
-  export let callback;
+  let { clock, callback } = $props();
 
   if ( !$currentIntervalId ) {
     onInterval(callback, 1000);

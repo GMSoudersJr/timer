@@ -10,8 +10,7 @@
     recoveryMinutes,
   } from '$lib/stores.js';
 
-  export let activityCallback;
-  export let recoveryCallback
+  let { activityCallback, recoveryCallback } = $props();
 
   const startInterval = () => {
     let intervalId;
@@ -30,7 +29,7 @@
     currentIntervalId.update(id => id = 0);
   });
 
-  $: disableStart = $activitySeconds + $activityMinutes + $recoverySeconds + $recoveryMinutes == 0;
+  let disableStart = $derived($activitySeconds + $activityMinutes + $recoverySeconds + $recoveryMinutes == 0);
 
   function handleClick() {
     runningTimer.update(status => status = !status);
@@ -52,7 +51,7 @@
   type="button"
   class="button-timer"
   style={$runningTimer ? "color: var(--colorRed)" : "color: var(--colorGreen)"}
-  on:click={ handleClick }
+  onclick={handleClick}
   disabled={ disableStart }
 >
   {$runningTimer ? "⏸" : "▶"}

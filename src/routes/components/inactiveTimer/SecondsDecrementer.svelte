@@ -8,7 +8,7 @@
   title={recoverySecondsDecrementorTitle}
   type="button"
   class="button-decrementer"
-  on:click={ recoverySeconds.decrement }
+  onclick={recoverySeconds.decrement}
   disabled={ $runningTimer }
 >
   ➖

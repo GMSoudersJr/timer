@@ -8,7 +8,7 @@
   title={ activityMinutesDecrementorTitle }
   type="button"
   class="button-decrementer"
-  on:click={ activityMinutes.decrement }
+  onclick={activityMinutes.decrement}
   disabled={ $runningTimer }
 >
   ➖
