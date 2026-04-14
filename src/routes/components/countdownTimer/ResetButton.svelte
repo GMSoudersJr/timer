@@ -26,12 +26,14 @@
 
 <button
   id="reset-button"
-  title="Reset the Timers"
+  title="Reset the timers"
+  aria-label="Reset the timers"
   type="button"
   class="button-timer"
-  on:click={ handleClick }
+  style="background: none; color: var(--colorNavy); border: 2px solid var(--colorNavy);"
+  onclick={handleClick}
 >
-  🔄
+  ↺ Reset
 </button>
 
 <style>
