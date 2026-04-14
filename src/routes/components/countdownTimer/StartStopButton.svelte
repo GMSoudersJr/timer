@@ -53,11 +53,13 @@
   aria-pressed={$runningTimer}
   type="button"
   class="button-timer"
-  style={$runningTimer ? "color: var(--colorRed)" : "color: var(--colorGreen)"}
+  style={$runningTimer
+    ? "background: var(--colorRed); color: #fff;"
+    : "background: var(--colorGreen); color: #fff;"}
   onclick={handleClick}
   disabled={disableStart}
 >
-  {$runningTimer ? "⏸" : "▶"}
+  {$runningTimer ? "⏸ Pause" : "▶ Start"}
 </button>
 
 <style>

@@ -6,12 +6,8 @@ export const activityTimerString = "Activity 💦 Time";
 export const recoveryTimerString = "Recovery 🧘 Time";
 export const activityTimerTitleString = "Activity 💦";
 export const recoveryTimerTitleString = "Recovery 🧘";
-export const directionsHeaderString = "Set Timers Above";
-export const directionsSubheaderString = "Let's Go!";
+export const taglineString = "Your pace. Your power.";
 export const alarmEmoji = "⏰";
-export const pauseButtonEmoji = "⏸";
-export const playButtonEmoji = "▶";
-export const resetButtonEmoji = "🔄";
 
 export const activitySecondsIncrementorTitle = "Increase Activity Seconds";
 export const activitySecondsDecrementorTitle = "Decrease Activity Seconds";

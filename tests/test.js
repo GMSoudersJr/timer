@@ -53,10 +53,9 @@ test('start button shows play emoji initially', async ({ page }) => {
 	await expect(startStop(page)).toContainText('▶');
 });
 
-test('idle display shows directions text', async ({ page }) => {
+test('idle display shows tagline', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.getByText('Set Timers Above')).toBeVisible();
-	await expect(page.getByText("Let's Go!")).toBeVisible();
+	await expect(page.getByText('Your pace. Your power.')).toBeVisible();
 });
 
 // ─── Activity Minutes ─────────────────────────────────────────────────────────
@@ -275,7 +274,7 @@ test('reset stops a running timer and shows idle display', async ({ page }) => {
 	await actMinInc(page).click();
 	await startStop(page).click();
 	await reset(page).click();
-	await expect(page.getByText('Set Timers Above')).toBeVisible();
+	await expect(page.getByText('Your pace. Your power.')).toBeVisible();
 });
 
 test('reset disables start button', async ({ page }) => {
@@ -337,6 +336,6 @@ test('after recovery ends, app resets to idle state', async ({ page }) => {
 	await actSecInc(page).click(); // 1 second activity
 	await recSecInc(page).click(); // 1 second recovery
 	await startStop(page).click();
-	await expect(page.getByText('Set Timers Above')).toBeVisible({ timeout: 10000 });
+	await expect(page.getByText('Your pace. Your power.')).toBeVisible({ timeout: 10000 });
 	await expect(startStop(page)).toContainText('▶');
 });

@@ -108,16 +108,15 @@
       justify-content: center;
       align-items: center;
       flex: 1;
+      gap: 1.25em;
    }
    .timer-display-container {
-      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
    }
    .button-container {
       display: flex;
-      gap: 1em;
+      gap: 0.75em;
    }
-
 </style>

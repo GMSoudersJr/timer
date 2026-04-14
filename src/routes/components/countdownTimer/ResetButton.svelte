@@ -30,9 +30,10 @@
   aria-label="Reset the timers"
   type="button"
   class="button-timer"
+  style="background: none; color: var(--colorNavy); border: 2px solid var(--colorNavy);"
   onclick={handleClick}
 >
-  🔄
+  ↺ Reset
 </button>
 
 <style>
