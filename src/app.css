@@ -1,79 +1,141 @@
+:root {
+  --fontFamilyDigital: 'Azeret Mono', monospace;
+  --fontFamilyEmoji: "Noto Color Emoji", sans-serif;
+  --fontFamilyText: 'Outfit', "Noto Color Emoji", sans-serif;
+
+  /* Light theme (default) */
+  --colorText: #36454F;
+  --colorBackground: #FFF5E0;
+  --colorNavy: #141E46;
+  --colorRed: #BB2525;
+  --colorSalmon: #FF6969;
+  --colorGreen: #3D7A47; /* darkened for WCAG AA contrast on cream background */
+  --colorCharcoal: #36454F;
+}
+
+:root.dark {
+  --colorText: #E0D5C1;
+  --colorBackground: #1A1A1E;
+  --colorNavy: #EDE0CF;
+  --colorRed: #D44040;
+  --colorSalmon: #FF7777;
+  --colorGreen: #96C291; /* original lighter green — sufficient contrast on dark background */
+  --colorCharcoal: #C8BAA0;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   user-select: none;
 }
+
 body {
   background: var(--colorBackground);
-  --fontFamilyDigital: "Orbitron", sans-serif;
-  --fontFamilyEmoji: "Noto Color Emoji", sans-serif;
-  --fontFamilyText: "Noto Color Emoji", "Roboto", sans-serif;
-
-  --colorText: #36454F;
-  --colorBackground: #FFF5E0;
-  --colorNavy: #141E46;
-  --colorRed: #BB2525;
-  --colorSalmon: #FF6969;
-  --colorGreen: #96C291;
+  color: var(--colorText);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
+
 h1, h2 {
   color: var(--colorNavy);
-  font-family: var(--fontFamilyText)
+  font-family: var(--fontFamilyText);
+  transition: color 0.25s ease;
 }
+
+/* Visible focus ring for keyboard navigation */
+:focus-visible {
+  outline: 3px solid var(--colorNavy);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
 .app-container {
-  height: 90vh;
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 2.5em;
+  gap: 2em;
+  padding: 0 1em 2em;
 }
-.set-timer-display,
-.set-minutes-container,
-.set-seconds-container {
+
+/* Setup section layout */
+.set-timer-display {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   font-family: var(--fontFamilyText);
-  gap: 0.5em;
+  gap: 0.75em;
 }
+
 .set-minutes-and-seconds-container {
   display: flex;
-  column-gap: 1em;
+  align-items: center;
+  gap: 0.6em;
+  flex-wrap: wrap;
+  justify-content: center;
 }
+
 .timer-text {
   font-family: var(--fontFamilyText);
 }
-.timer-digits, .time-colon{
-  color: var(--colorGreen);
+
+/* Colon separator between spinners */
+.time-colon {
+  color: var(--colorNavy);
   font-family: var(--fontFamilyDigital);
+  font-size: 1.6em;
+  font-weight: 700;
+  transition: color 0.25s ease;
 }
-.button-incrementer,
-.button-decrementer {
-  height: 45px;
-  width: 45px;
-  font-family: var(--fontFamilyEmoji);
-}
-.delta-button-container {
-  display: flex;
-  column-gap: 1em;
-}
+
+/* Running countdown display */
 .timer {
   font-family: var(--fontFamilyDigital);
   font-size: 3em;
+  color: var(--colorGreen);
+  transition: color 0.25s ease;
 }
+
 .button-timer {
-   font-family: var(--fontFamilyEmoji);
-   font-size: 50px;
-   border: none;
-   border-radius: 5px;
-   background: none;
+  font-family: var(--fontFamilyEmoji);
+  font-size: 50px;
+  border: none;
+  border-radius: 5px;
+  background: none;
 }
+
 .button-timer:hover {
   cursor: pointer;
 }
+
 .button-timer:disabled {
   cursor: default;
+}
+
+@media screen and (max-width: 40em) {
+  .app-container {
+    gap: 1.5em;
+  }
+
+  .timer {
+    font-size: 2em;
+  }
+
+  .button-timer {
+    font-size: 38px;
+  }
+
+  .time-colon {
+    font-size: 1.3em;
+  }
+}
+
+/* Respect user's motion preference — disable all transitions */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

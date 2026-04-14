@@ -1,5 +1,6 @@
 <script>
   import { headTitleString } from '$lib/strings.js';
+  import { timerToDisplay } from '$lib/stores.js';
   import AppTitle from './components/AppTitle.svelte';
   import ActivityTimer from './components/activeTimer/SetTimer.svelte';
   import RecoveryTimer from './components/inactiveTimer/SetTimer.svelte';
@@ -14,7 +15,9 @@
 
 <div class="app-container">
   <AppTitle />
-  <ActivityTimer />
-  <RecoveryTimer />
+  {#if !$timerToDisplay}
+    <ActivityTimer />
+    <RecoveryTimer />
+  {/if}
   <Display />
 </div>

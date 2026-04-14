@@ -1,5 +1,4 @@
 <script>
-  import { onDestroy } from 'svelte';
   import {
     runningTimer,
     currentIntervalId,
@@ -12,47 +11,51 @@
 
   let { activityCallback, recoveryCallback } = $props();
 
+  $effect(() => {
+    return () => {
+      clearInterval($currentIntervalId);
+      currentIntervalId.set(0);
+    };
+  });
+
   const startInterval = () => {
     let intervalId;
-    if ( $timerToDisplay === "activity" ) {
+    if ($timerToDisplay === "activity") {
       intervalId = setInterval(activityCallback, 1000);
-    } else if ( $timerToDisplay === "recovery" ) {
+    } else if ($timerToDisplay === "recovery") {
       intervalId = setInterval(recoveryCallback, 1000);
     } else {
       intervalId = 0;
     }
-    currentIntervalId.update(id => id = intervalId);
+    currentIntervalId.set(intervalId);
   };
-
-  onDestroy(() => {
-    clearInterval($currentIntervalId);
-    currentIntervalId.update(id => id = 0);
-  });
 
   let disableStart = $derived($activitySeconds + $activityMinutes + $recoverySeconds + $recoveryMinutes == 0);
 
   function handleClick() {
-    runningTimer.update(status => status = !status);
+    runningTimer.update(status => !status);
 
-    if ( $runningTimer && !$timerToDisplay ) {
-      timerToDisplay.update(name => name = "activity");
-    } else if ( $runningTimer && $timerToDisplay ) {
+    if ($runningTimer && !$timerToDisplay) {
+      timerToDisplay.set("activity");
+    } else if ($runningTimer && $timerToDisplay) {
       startInterval();
-    } else if ( !$runningTimer && $timerToDisplay ) {
+    } else if (!$runningTimer && $timerToDisplay) {
       clearInterval($currentIntervalId);
-      currentIntervalId.update(id => id = 0);
+      currentIntervalId.set(0);
     }
   }
 </script>
 
 <button
   id="button-timer-start-stop"
-  title="Start and Stop the Timer"
+  title={$runningTimer ? 'Pause timer' : 'Start timer'}
+  aria-label={$runningTimer ? 'Pause timer' : 'Start timer'}
+  aria-pressed={$runningTimer}
   type="button"
   class="button-timer"
   style={$runningTimer ? "color: var(--colorRed)" : "color: var(--colorGreen)"}
   onclick={handleClick}
-  disabled={ disableStart }
+  disabled={disableStart}
 >
   {$runningTimer ? "⏸" : "▶"}
 </button>

@@ -6,7 +6,7 @@
   <h2 class="directions">
     {directionsHeaderString}
   </h2>
-  <p class="timer-digits timer">
+  <p class="timer">
     {directionsSubheaderString}
   </p>
 </div>

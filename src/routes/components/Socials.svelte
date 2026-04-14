@@ -1,10 +1,8 @@
 <script>
   import { socials } from '$lib/socials.js';
-  let innerWidth = 0;
-  let displayIconLight = $derived(innerWidth <= 64 * 16);
 </script>
 
-<section class="contact" id="contact">
+<section class="contact" id="contact" aria-label="Contact">
 {#each socials as social (social.id)}
   <a
     href={social.href}
@@ -13,6 +11,7 @@
     id={social.id}
     class={social.class}
     title={social.title}
+    aria-label={social.title}
   >
     {#if social.id === "email"}
       {social.emoji}

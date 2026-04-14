@@ -26,7 +26,8 @@
 
 <button
   id="reset-button"
-  title="Reset the Timers"
+  title="Reset the timers"
+  aria-label="Reset the timers"
   type="button"
   class="button-timer"
   onclick={handleClick}

@@ -1,27 +1,23 @@
 import { expect, test } from '@playwright/test';
 
-// Selectors
-const SEL = {
-	// Activity timer setup
-	actMinDisplay: '#activity-minutes',
-	actSecDisplay: '#activity-seconds',
-	actMinInc: '#active-minutes-incrementer',
-	actMinDec: '#active-minutes-decrementer',
-	actSecInc: '#active-seconds-incrementer',
-	actSecDec: '#active-seconds-decrementer',
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-	// Recovery timer setup
-	recMinDisplay: '#recovery-minutes',
-	recSecDisplay: '#recovery-seconds',
-	recMinInc: '#inactive-minutes-increment',
-	recMinDec: '#inactive-minutes-decrementer',
-	recSecInc: '#inactive-seconds-increment',
-	recSecDec: '#inactive-seconds-decrement',
+const startStop = (page) => page.locator('#button-timer-start-stop');
+const reset = (page) => page.locator('#reset-button');
 
-	// Controls
-	startStop: '#button-timer-start-stop',
-	reset: '#reset-button',
-};
+const actMin = (page) => page.getByRole('spinbutton', { name: 'Activity minutes' });
+const actSec = (page) => page.getByRole('spinbutton', { name: 'Activity seconds' });
+const recMin = (page) => page.getByRole('spinbutton', { name: 'Recovery minutes' });
+const recSec = (page) => page.getByRole('spinbutton', { name: 'Recovery seconds' });
+
+const actMinInc = (page) => page.getByRole('button', { name: 'Increase Activity minutes' });
+const actMinDec = (page) => page.getByRole('button', { name: 'Decrease Activity minutes' });
+const actSecInc = (page) => page.getByRole('button', { name: 'Increase Activity seconds' });
+const actSecDec = (page) => page.getByRole('button', { name: 'Decrease Activity seconds' });
+const recMinInc = (page) => page.getByRole('button', { name: 'Increase Recovery minutes' });
+const recMinDec = (page) => page.getByRole('button', { name: 'Decrease Recovery minutes' });
+const recSecInc = (page) => page.getByRole('button', { name: 'Increase Recovery seconds' });
+const recSecDec = (page) => page.getByRole('button', { name: 'Decrease Recovery seconds' });
 
 // ─── Initial State ───────────────────────────────────────────────────────────
 
@@ -35,26 +31,26 @@ test('app heading is visible', async ({ page }) => {
 	await expect(page.locator('.app-title')).toContainText('INTERVAL TIMER');
 });
 
-test('activity timer starts at 00 m and 00 s', async ({ page }) => {
+test('activity timer starts at 0 m and 0 s', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.locator(SEL.actMinDisplay)).toContainText('00 m');
-	await expect(page.locator(SEL.actSecDisplay)).toContainText('00 s');
+	await expect(actMin(page)).toHaveValue('0');
+	await expect(actSec(page)).toHaveValue('0');
 });
 
-test('recovery timer starts at 00 m and 00 s', async ({ page }) => {
+test('recovery timer starts at 0 m and 0 s', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.locator(SEL.recMinDisplay)).toContainText('00 m');
-	await expect(page.locator(SEL.recSecDisplay)).toContainText('00 s');
+	await expect(recMin(page)).toHaveValue('0');
+	await expect(recSec(page)).toHaveValue('0');
 });
 
 test('start button is disabled when both timers are 00:00', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.locator(SEL.startStop)).toBeDisabled();
+	await expect(startStop(page)).toBeDisabled();
 });
 
 test('start button shows play emoji initially', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.locator(SEL.startStop)).toContainText('▶');
+	await expect(startStop(page)).toContainText('▶');
 });
 
 test('idle display shows directions text', async ({ page }) => {
@@ -65,305 +61,282 @@ test('idle display shows directions text', async ({ page }) => {
 
 // ─── Activity Minutes ─────────────────────────────────────────────────────────
 
-test('activity minutes increments from 00 to 01', async ({ page }) => {
+test('activity minutes increments from 0 to 1', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc);
-	await expect(page.locator(SEL.actMinDisplay)).toContainText('01 m');
+	await actMinInc(page).click();
+	await expect(actMin(page)).toHaveValue('1');
 });
 
-test('activity minutes decrements from 01 to 00', async ({ page }) => {
+test('activity minutes decrements from 1 to 0', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc);
-	await page.click(SEL.actMinDec);
-	await expect(page.locator(SEL.actMinDisplay)).toContainText('00 m');
+	await actMinInc(page).click();
+	await actMinDec(page).click();
+	await expect(actMin(page)).toHaveValue('0');
 });
 
-test('activity minutes wraps from 59 to 00 on increment', async ({ page }) => {
+test('activity minutes wraps from 59 to 0 on increment', async ({ page }) => {
 	await page.goto('/');
-	// Set to 59 via decrement (0 -> 59 wrap)
-	await page.click(SEL.actMinDec);
-	await expect(page.locator(SEL.actMinDisplay)).toContainText('59 m');
-	await page.click(SEL.actMinInc);
-	await expect(page.locator(SEL.actMinDisplay)).toContainText('00 m');
+	await actMinDec(page).click(); // 0 -> 59
+	await expect(actMin(page)).toHaveValue('59');
+	await actMinInc(page).click(); // 59 -> 0
+	await expect(actMin(page)).toHaveValue('0');
 });
 
-test('activity minutes wraps from 00 to 59 on decrement', async ({ page }) => {
+test('activity minutes wraps from 0 to 59 on decrement', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinDec);
-	await expect(page.locator(SEL.actMinDisplay)).toContainText('59 m');
+	await actMinDec(page).click();
+	await expect(actMin(page)).toHaveValue('59');
 });
 
 // ─── Activity Seconds ─────────────────────────────────────────────────────────
 
-test('activity seconds increments from 00 to 01', async ({ page }) => {
+test('activity seconds increments from 0 to 1', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actSecInc);
-	await expect(page.locator(SEL.actSecDisplay)).toContainText('01 s');
+	await actSecInc(page).click();
+	await expect(actSec(page)).toHaveValue('1');
 });
 
-test('activity seconds decrements from 01 to 00', async ({ page }) => {
+test('activity seconds decrements from 1 to 0', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actSecInc);
-	await page.click(SEL.actSecDec);
-	await expect(page.locator(SEL.actSecDisplay)).toContainText('00 s');
+	await actSecInc(page).click();
+	await actSecDec(page).click();
+	await expect(actSec(page)).toHaveValue('0');
 });
 
-test('activity seconds wraps from 00 to 59 on decrement', async ({ page }) => {
+test('activity seconds wraps from 0 to 59 on decrement', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actSecDec);
-	await expect(page.locator(SEL.actSecDisplay)).toContainText('59 s');
+	await actSecDec(page).click();
+	await expect(actSec(page)).toHaveValue('59');
 });
 
-test('activity seconds wraps from 59 to 00 on increment', async ({ page }) => {
+test('activity seconds wraps from 59 to 0 on increment', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actSecDec); // 0 -> 59
-	await page.click(SEL.actSecInc); // 59 -> 0
-	await expect(page.locator(SEL.actSecDisplay)).toContainText('00 s');
+	await actSecDec(page).click(); // 0 -> 59
+	await actSecInc(page).click(); // 59 -> 0
+	await expect(actSec(page)).toHaveValue('0');
 });
 
 // ─── Recovery Minutes ─────────────────────────────────────────────────────────
 
-test('recovery minutes increments from 00 to 01', async ({ page }) => {
+test('recovery minutes increments from 0 to 1', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.recMinInc);
-	await expect(page.locator(SEL.recMinDisplay)).toContainText('01 m');
+	await recMinInc(page).click();
+	await expect(recMin(page)).toHaveValue('1');
 });
 
-test('recovery minutes decrements from 01 to 00', async ({ page }) => {
+test('recovery minutes decrements from 1 to 0', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.recMinInc);
-	await page.click(SEL.recMinDec);
-	await expect(page.locator(SEL.recMinDisplay)).toContainText('00 m');
+	await recMinInc(page).click();
+	await recMinDec(page).click();
+	await expect(recMin(page)).toHaveValue('0');
 });
 
-test('recovery minutes wraps from 00 to 59 on decrement', async ({ page }) => {
+test('recovery minutes wraps from 0 to 59 on decrement', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.recMinDec);
-	await expect(page.locator(SEL.recMinDisplay)).toContainText('59 m');
+	await recMinDec(page).click();
+	await expect(recMin(page)).toHaveValue('59');
 });
 
-test('recovery minutes wraps from 59 to 00 on increment', async ({ page }) => {
+test('recovery minutes wraps from 59 to 0 on increment', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.recMinDec); // 0 -> 59
-	await page.click(SEL.recMinInc); // 59 -> 0
-	await expect(page.locator(SEL.recMinDisplay)).toContainText('00 m');
+	await recMinDec(page).click(); // 0 -> 59
+	await recMinInc(page).click(); // 59 -> 0
+	await expect(recMin(page)).toHaveValue('0');
 });
 
 // ─── Recovery Seconds ─────────────────────────────────────────────────────────
 
-test('recovery seconds increments from 00 to 01', async ({ page }) => {
+test('recovery seconds increments from 0 to 1', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.recSecInc);
-	await expect(page.locator(SEL.recSecDisplay)).toContainText('01 s');
+	await recSecInc(page).click();
+	await expect(recSec(page)).toHaveValue('1');
 });
 
-test('recovery seconds decrements from 01 to 00', async ({ page }) => {
+test('recovery seconds decrements from 1 to 0', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.recSecInc);
-	await page.click(SEL.recSecDec);
-	await expect(page.locator(SEL.recSecDisplay)).toContainText('00 s');
+	await recSecInc(page).click();
+	await recSecDec(page).click();
+	await expect(recSec(page)).toHaveValue('0');
 });
 
-test('recovery seconds wraps from 00 to 59 on decrement', async ({ page }) => {
+test('recovery seconds wraps from 0 to 59 on decrement', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.recSecDec);
-	await expect(page.locator(SEL.recSecDisplay)).toContainText('59 s');
+	await recSecDec(page).click();
+	await expect(recSec(page)).toHaveValue('59');
 });
 
-test('recovery seconds wraps from 59 to 00 on increment', async ({ page }) => {
+test('recovery seconds wraps from 59 to 0 on increment', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.recSecDec); // 0 -> 59
-	await page.click(SEL.recSecInc); // 59 -> 0
-	await expect(page.locator(SEL.recSecDisplay)).toContainText('00 s');
+	await recSecDec(page).click(); // 0 -> 59
+	await recSecInc(page).click(); // 59 -> 0
+	await expect(recSec(page)).toHaveValue('0');
 });
 
 // ─── Start Button Enable/Disable ──────────────────────────────────────────────
 
 test('start button enables when activity minutes > 0', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc);
-	await expect(page.locator(SEL.startStop)).toBeEnabled();
+	await actMinInc(page).click();
+	await expect(startStop(page)).toBeEnabled();
 });
 
 test('start button enables when activity seconds > 0', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actSecInc);
-	await expect(page.locator(SEL.startStop)).toBeEnabled();
+	await actSecInc(page).click();
+	await expect(startStop(page)).toBeEnabled();
 });
 
 test('start button enables when recovery minutes > 0', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.recMinInc);
-	await expect(page.locator(SEL.startStop)).toBeEnabled();
+	await recMinInc(page).click();
+	await expect(startStop(page)).toBeEnabled();
 });
 
 test('start button enables when recovery seconds > 0', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.recSecInc);
-	await expect(page.locator(SEL.startStop)).toBeEnabled();
+	await recSecInc(page).click();
+	await expect(startStop(page)).toBeEnabled();
 });
 
 test('start button disables again when activity minutes decremented back to 0', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc);
-	await expect(page.locator(SEL.startStop)).toBeEnabled();
-	await page.click(SEL.actMinDec);
-	await expect(page.locator(SEL.startStop)).toBeDisabled();
+	await actMinInc(page).click();
+	await expect(startStop(page)).toBeEnabled();
+	await actMinDec(page).click();
+	await expect(startStop(page)).toBeDisabled();
 });
 
 // ─── Start / Pause / Resume ───────────────────────────────────────────────────
 
 test('clicking start shows activity display and pause emoji', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc); // set 1 minute
-	await page.click(SEL.startStop);
-	await expect(page.getByText('Activity 💦')).toBeVisible();
-	await expect(page.locator(SEL.startStop)).toContainText('⏸');
+	await actMinInc(page).click();
+	await startStop(page).click();
+	await expect(page.getByText('Activity 💦', { exact: true })).toBeVisible();
+	await expect(startStop(page)).toContainText('⏸');
 });
 
-test('clicking start disables increment/decrement buttons', async ({ page }) => {
+test('clicking start hides setup controls', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actSecInc);
-	await page.click(SEL.startStop);
-	await expect(page.locator(SEL.actMinInc)).toBeDisabled();
-	await expect(page.locator(SEL.actMinDec)).toBeDisabled();
-	await expect(page.locator(SEL.actSecInc)).toBeDisabled();
-	await expect(page.locator(SEL.actSecDec)).toBeDisabled();
-	await expect(page.locator(SEL.recMinInc)).toBeDisabled();
-	await expect(page.locator(SEL.recMinDec)).toBeDisabled();
-	await expect(page.locator(SEL.recSecInc)).toBeDisabled();
-	await expect(page.locator(SEL.recSecDec)).toBeDisabled();
+	await actSecInc(page).click();
+	await startStop(page).click();
+	// Setup sections are removed from DOM when timer is running
+	await expect(page.getByRole('group', { name: 'Activity minutes' })).not.toBeVisible();
+	await expect(page.getByRole('group', { name: 'Recovery minutes' })).not.toBeVisible();
 });
 
 test('pausing shows play emoji and re-enables start button', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc);
-	await page.click(SEL.startStop); // start
-	await page.click(SEL.startStop); // pause
-	await expect(page.locator(SEL.startStop)).toContainText('▶');
+	await actMinInc(page).click();
+	await startStop(page).click(); // start
+	await startStop(page).click(); // pause
+	await expect(startStop(page)).toContainText('▶');
 });
 
 test('pausing keeps activity display visible', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc);
-	await page.click(SEL.startStop); // start
-	await page.click(SEL.startStop); // pause
-	await expect(page.getByText('Activity 💦')).toBeVisible();
+	await actMinInc(page).click();
+	await startStop(page).click(); // start
+	await startStop(page).click(); // pause
+	await expect(page.getByText('Activity 💦', { exact: true })).toBeVisible();
 });
 
 test('resuming after pause shows pause emoji again', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc);
-	await page.click(SEL.startStop); // start
-	await page.click(SEL.startStop); // pause
-	await page.click(SEL.startStop); // resume
-	await expect(page.locator(SEL.startStop)).toContainText('⏸');
+	await actMinInc(page).click();
+	await startStop(page).click(); // start
+	await startStop(page).click(); // pause
+	await startStop(page).click(); // resume
+	await expect(startStop(page)).toContainText('⏸');
 });
 
 // ─── Reset Button ─────────────────────────────────────────────────────────────
 
-test('reset clears activity timer display to 00', async ({ page }) => {
+test('reset clears activity timer to 0', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc);
-	await page.click(SEL.actSecInc);
-	await page.click(SEL.reset);
-	await expect(page.locator(SEL.actMinDisplay)).toContainText('00 m');
-	await expect(page.locator(SEL.actSecDisplay)).toContainText('00 s');
+	await actMinInc(page).click();
+	await actSecInc(page).click();
+	await reset(page).click();
+	await expect(actMin(page)).toHaveValue('0');
+	await expect(actSec(page)).toHaveValue('0');
 });
 
-test('reset clears recovery timer display to 00', async ({ page }) => {
+test('reset clears recovery timer to 0', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.recMinInc);
-	await page.click(SEL.recSecInc);
-	await page.click(SEL.reset);
-	await expect(page.locator(SEL.recMinDisplay)).toContainText('00 m');
-	await expect(page.locator(SEL.recSecDisplay)).toContainText('00 s');
+	await recMinInc(page).click();
+	await recSecInc(page).click();
+	await reset(page).click();
+	await expect(recMin(page)).toHaveValue('0');
+	await expect(recSec(page)).toHaveValue('0');
 });
 
 test('reset stops a running timer and shows idle display', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc);
-	await page.click(SEL.startStop);
-	await page.click(SEL.reset);
+	await actMinInc(page).click();
+	await startStop(page).click();
+	await reset(page).click();
 	await expect(page.getByText('Set Timers Above')).toBeVisible();
 });
 
 test('reset disables start button', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc);
-	await page.click(SEL.startStop);
-	await page.click(SEL.reset);
-	await expect(page.locator(SEL.startStop)).toBeDisabled();
+	await actMinInc(page).click();
+	await startStop(page).click();
+	await reset(page).click();
+	await expect(startStop(page)).toBeDisabled();
 });
 
 test('reset shows play emoji on start button', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actMinInc);
-	await page.click(SEL.startStop);
-	await page.click(SEL.reset);
-	await expect(page.locator(SEL.startStop)).toContainText('▶');
+	await actMinInc(page).click();
+	await startStop(page).click();
+	await reset(page).click();
+	await expect(startStop(page)).toContainText('▶');
 });
 
-test('reset re-enables increment/decrement buttons', async ({ page }) => {
+test('reset re-enables setup controls', async ({ page }) => {
 	await page.goto('/');
-	await page.click(SEL.actSecInc);
-	await page.click(SEL.startStop);
-	await page.click(SEL.reset);
-	await expect(page.locator(SEL.actMinInc)).toBeEnabled();
-	await expect(page.locator(SEL.actSecInc)).toBeEnabled();
-	await expect(page.locator(SEL.recMinInc)).toBeEnabled();
-	await expect(page.locator(SEL.recSecInc)).toBeEnabled();
+	await actSecInc(page).click();
+	await startStop(page).click();
+	await reset(page).click();
+	await expect(actMinInc(page)).toBeEnabled();
+	await expect(actSecInc(page)).toBeEnabled();
+	await expect(recMinInc(page)).toBeEnabled();
+	await expect(recSecInc(page)).toBeEnabled();
 });
 
 // ─── Activity → Recovery Transition ──────────────────────────────────────────
 
 test('activity timer reaching zero shows alarm message "Take A Break!"', async ({ page }) => {
-	await page.clock.install();
 	await page.goto('/');
-	// Set activity to 1 second
-	await page.click(SEL.actSecInc);
-	await page.click(SEL.startStop);
-	// Advance 1 second for the tick, then 1500ms for the transition timeout
-	await page.clock.tick(1000);
-	await page.clock.tick(1500);
-	await expect(page.getByText('Take A Break!')).toBeVisible();
+	await actSecInc(page).click(); // 1 second activity
+	await startStop(page).click();
+	await expect(page.getByText('Take A Break!')).toBeVisible({ timeout: 5000 });
 });
 
 test('after activity ends, recovery display appears', async ({ page }) => {
-	await page.clock.install();
 	await page.goto('/');
-	await page.click(SEL.actSecInc); // 1 second activity
-	await page.click(SEL.recMinInc); // 1 minute recovery so it doesn't immediately end
-	await page.click(SEL.startStop);
-	await page.clock.tick(1000);  // activity tick reaches 0
-	await page.clock.tick(1500);  // transition timeout fires
-	await expect(page.getByText('Recovery 🧘')).toBeVisible();
+	await actSecInc(page).click(); // 1 second activity
+	await recMinInc(page).click(); // 1 minute recovery
+	await startStop(page).click();
+	await expect(page.getByText('Recovery 🧘', { exact: true })).toBeVisible({ timeout: 5000 });
 });
 
 // ─── Recovery → Reset Transition ─────────────────────────────────────────────
 
 test('recovery timer reaching zero shows alarm message "Get To Work!"', async ({ page }) => {
-	await page.clock.install();
 	await page.goto('/');
-	await page.click(SEL.actSecInc); // 1 second activity
-	await page.click(SEL.recSecInc); // 1 second recovery
-	await page.click(SEL.startStop);
-	await page.clock.tick(1000);  // activity ends
-	await page.clock.tick(1500);  // transition to recovery
-	await page.clock.tick(1000);  // recovery ends
-	await expect(page.getByText('Get To Work!')).toBeVisible();
+	await actSecInc(page).click(); // 1 second activity
+	await recSecInc(page).click(); // 1 second recovery
+	await startStop(page).click();
+	await expect(page.getByText('Get To Work!')).toBeVisible({ timeout: 8000 });
 });
 
 test('after recovery ends, app resets to idle state', async ({ page }) => {
-	await page.clock.install();
 	await page.goto('/');
-	await page.click(SEL.actSecInc); // 1 second activity
-	await page.click(SEL.recSecInc); // 1 second recovery
-	await page.click(SEL.startStop);
-	await page.clock.tick(1000);  // activity ends
-	await page.clock.tick(1500);  // transition to recovery
-	await page.clock.tick(1000);  // recovery ends
-	await page.clock.tick(1500);  // reset timeout fires
-	await expect(page.getByText('Set Timers Above')).toBeVisible();
-	await expect(page.locator(SEL.startStop)).toContainText('▶');
+	await actSecInc(page).click(); // 1 second activity
+	await recSecInc(page).click(); // 1 second recovery
+	await startStop(page).click();
+	await expect(page.getByText('Set Timers Above')).toBeVisible({ timeout: 10000 });
+	await expect(startStop(page)).toContainText('▶');
 });

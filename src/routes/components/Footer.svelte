@@ -23,7 +23,7 @@
   }
 
   footer p {
-    font-family: var(--fontFamilyRegular);
+    font-family: var(--fontFamilyText);
     font-size: 16px;
     line-height: 24px;
   }

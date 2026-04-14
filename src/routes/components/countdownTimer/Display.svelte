@@ -22,66 +22,54 @@
    import RecoveryTimer from './RecoveryTimer.svelte';
    import Alarm from './Alarm.svelte';
 
-   let activityCountdownSeconds = $derived(calculateSeconds($activityMinutes, $activitySeconds));
-   let recoveryCountdownSeconds = $derived(calculateSeconds($recoveryMinutes, $recoverySeconds));
+   let activityCountdownSeconds = $state(0);
+   let recoveryCountdownSeconds = $state(0);
 
-   let activityMinutesAndSecondsString
-   = $derived(minutesAndSecondsString(activityCountdownSeconds));
+   // Sync countdown values from stores whenever the timer is not actively running
+   $effect(() => {
+      if (!$timerToDisplay) {
+         activityCountdownSeconds = calculateSeconds($activityMinutes, $activitySeconds);
+         recoveryCountdownSeconds = calculateSeconds($recoveryMinutes, $recoverySeconds);
+      }
+   });
 
-   let recoveryMinutesAndSecondsString
-   = $derived(minutesAndSecondsString(recoveryCountdownSeconds));
+   let activityMinutesAndSecondsString = $derived(minutesAndSecondsString(activityCountdownSeconds));
+   let recoveryMinutesAndSecondsString = $derived(minutesAndSecondsString(recoveryCountdownSeconds));
 
-   let soundTheAlarm = $state();
-   let timeoutId;
-
-
+   let soundTheAlarm = $state(false);
 
    const activityTick = () => {
-      if (activityCountdownSeconds > 0 && $runningTimer)  {
+      if (activityCountdownSeconds > 0 && $runningTimer) {
          activityCountdownSeconds--;
       }
-      if ( activityCountdownSeconds == 0 && $timerToDisplay === 'activity' ) {
+      if (activityCountdownSeconds == 0 && $timerToDisplay === 'activity') {
          soundTheAlarm = true;
          clearInterval($currentIntervalId);
-         currentIntervalId.update(id => id = 0);
-         //TODO BEEP!
+         currentIntervalId.set(0);
          currentTimeoutId.set(setTimeout(() => {
-            timerToDisplay.update(name => name = "recovery");
+            timerToDisplay.set("recovery");
             clearInterval($currentIntervalId);
             currentIntervalId.set(null);
-            soundTheAlarm = false;
-         }, 1500))
-      }
-   }
-
-   const recoveryTick = () => {
-      if (recoveryCountdownSeconds > 0 && $runningTimer)  {
-         recoveryCountdownSeconds--;
-      } else if ( recoveryCountdownSeconds == 0 && $timerToDisplay === 'recovery' ) {
-         soundTheAlarm = true;
-         //TODO BEEP!
-         clearInterval($currentIntervalId);
-         currentIntervalId.update(id => id = 0);
-         clearTimeout($currentTimeoutId);
-         currentTimeoutId.set(null);
-         currentTimeoutId.set(setTimeout(() => {
-            resetTheDisplay();
-            resetTheTimers();
-            resetTheButton();
             soundTheAlarm = false;
          }, 1500));
       }
    }
 
-   const resetTheButton = () => {
-      runningTimer.update(status => status = !status);
-   }
-   const resetTheDisplay = () => {
-      timerToDisplay.update(display => display = null);
-   }
-   const resetTheTimers = () => {
-      activityCountdownSeconds = calculateSeconds($activityMinutes, $activitySeconds);
-      recoveryCountdownSeconds = calculateSeconds($recoveryMinutes, $recoverySeconds);
+   const recoveryTick = () => {
+      if (recoveryCountdownSeconds > 0 && $runningTimer) {
+         recoveryCountdownSeconds--;
+      } else if (recoveryCountdownSeconds == 0 && $timerToDisplay === 'recovery') {
+         soundTheAlarm = true;
+         clearInterval($currentIntervalId);
+         currentIntervalId.set(0);
+         clearTimeout($currentTimeoutId);
+         currentTimeoutId.set(null);
+         currentTimeoutId.set(setTimeout(() => {
+            timerToDisplay.set(null); // triggers $effect to reset countdown values
+            runningTimer.set(false);
+            soundTheAlarm = false;
+         }, 1500));
+      }
    }
 </script>
 
@@ -119,6 +107,13 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      flex: 1;
+   }
+   .timer-display-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
    }
    .button-container {
       display: flex;
