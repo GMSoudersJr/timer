@@ -32,6 +32,9 @@
 	},
 	"type": "module",
 	"engines": {
-		"node": ">=24"
+		"node": ">=20"
+	},
+	"dependencies": {
+		"@sveltejs/adapter-vercel": "^6.3.3"
 	}
 }
